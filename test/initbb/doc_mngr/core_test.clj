@@ -1,6 +1,6 @@
-(ns doc-mngr.core-test
+(ns initbb.doc-mngr.core-test
   (:require [clojure.test :refer :all]
-            [doc-mngr.core :refer :all]))
+            [initbb.doc-mngr.core :refer :all]))
 
 (deftest a-test
   (testing "FIXME, I fail."

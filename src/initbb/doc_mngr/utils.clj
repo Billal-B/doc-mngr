@@ -1,4 +1,4 @@
-(ns doc-mngr.utils
+(ns initbb.doc-mngr.utils
   (:import
     (java.io File FileInputStream FileNotFoundException)
     (java.nio.file Files LinkOption NoSuchFileException)
@@ -42,13 +42,11 @@
           fis (FileInputStream. file)
           pc (ParseContext.)]
       (.parse parser fis handler metadata pc)
-      (print (seq (.names metadata)))
       {:content-type (.get metadata "Content-Type")})
     (catch FileNotFoundException _ nil)
     (catch ZeroByteFileException _ nil)))
 
-(if-some [metadata (Files/getFileAttributeView
-                     (.toPath (File. "/home/billal/Projects/doc-mngr/CHANGELOG.md"))
-                     (.getClass BasicFileAttributes)
-                     (into-array [LinkOption/NOFOLLOW_LINKS]))]
-  (print metadata))
+(defn extract-metadata [^File file]
+  (let [base-metadata (extract-base-metadata file)
+        content-type (extract-content-type file)]
+    (merge base-metadata content-type)))

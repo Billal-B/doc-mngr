@@ -1,6 +1,6 @@
-(ns doc-mngr.utils-test
+(ns initbb.doc-mngr.utils-test
   (:require [clojure.test :refer :all]
-            [doc-mngr.utils :as u])
+            [initbb.doc-mngr.utils :as u])
   (:import (java.io File)
            (java.time LocalDateTime Instant)
            (java.nio.file.attribute FileTime)))
@@ -49,3 +49,12 @@
     (let [metadata (u/extract-base-metadata (File. "dev-resources/doc_mngr/test"))]
       (is (= (:modification-time metadata)
              (LocalDateTime/parse "2022-01-19T00:15:11.368237"))))))
+
+(deftest extract-metadata-test
+  (testing "should merge all metadata"
+    (let [metadata (u/extract-metadata (File. "dev-resources/doc_mngr/test"))]
+      (is (= metadata
+             {:access-time (LocalDateTime/parse "2022-01-19T00:15:13.304259")
+              :content-type      "text/plain; charset=ISO-8859-1"
+              :creation-time (LocalDateTime/parse "2022-01-19T00:15:11.368237")
+              :modification-time (LocalDateTime/parse "2022-01-19T00:15:11.368237")})))))
