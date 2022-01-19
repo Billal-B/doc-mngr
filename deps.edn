@@ -11,4 +11,4 @@
            :build {:main-opts ["-m" "figwheel.main" "-b" "dev" "-r"]}
            :min   {:main-opts ["-m" "figwheel.main" "-O" "advanced" "-bo" "dev"]}
            :test  {:extra-paths ["test" "dev-resources"]
-                   :main-opts ["-m" "figwheel.main" "-co" "test.cljs.edn" "-m" "initbb.test-runner"]}}}
+                   :main-opts ["-m" "figwheel.main" "-co" "test.cljs.edn" "-m" "initbb.doc_mngr.test-runner"]}}}
