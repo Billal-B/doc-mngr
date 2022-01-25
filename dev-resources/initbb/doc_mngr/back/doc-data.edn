@@ -1,0 +1,7 @@
+{:document
+ {:id "some_id"
+  :path "some_path"
+  :metadata {:content_type ""
+             :creation_time ""
+             :access_time ""
+             :modification_time ""}}}

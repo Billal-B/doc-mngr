@@ -1,26 +1,26 @@
-(ns ^:figwheel-hooks initbb.doc-mngr.core
+(ns ^:figwheel-hooks initbb.doc-mngr.front.core
   (:require
     [goog.dom :as gdom]
     [reagent.core :as reagent :refer [atom]]
     [reagent.dom :as rdom]))
 
-(println "This text is printed from src/initbb/doc_mngr.cljs. Go ahead and edit it and see reloading in action.")
-
-(defn multiply [a b] (* a b))
-
 ;; define your app data so that it doesn't get over-written on reload
-(defonce app-state (atom {:text "Hello world!"}))
+(defonce app-state (atom {:text "Hello !"}))
 
 (defn get-app-element []
   (gdom/getElement "app"))
 
-(defn hello-world []
-  [:div
-   [:h1 (:text @app-state)]
-   [:h3 "Edit this in src/initbb/doc_mngr.cljs and watch it change!"]])
+(defn scan-folder []
+  [:div {:class "scan-folder"}
+   [:h2 "Scan folder :"]
+   [:input {:type "file" :directory "" :webkitdirectory "" }]])
+
+(defn app []
+  [:div {:class "app"}
+   [scan-folder]])
 
 (defn mount [el]
-  (rdom/render [hello-world] el))
+  (rdom/render [app] el))
 
 (defn mount-app-element []
   (when-let [el (get-app-element)]

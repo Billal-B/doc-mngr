@@ -1,0 +1,13 @@
+{:objects
+ {:Document
+  {:description "A document."
+   :fields
+   {:id {:type String}}}}
+
+ :queries
+ {:get_metadata
+  {:type        :Document
+   :description "Get the metadata of a document given its path."
+   :args
+   {:path {:type String}}
+   :resolve     :query/get-metadata}}}

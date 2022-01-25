@@ -1,4 +1,4 @@
-(ns initbb.doc-mngr.utils
+(ns initbb.doc-mngr.back.utils
   (:import
     (java.io File FileInputStream FileNotFoundException)
     (java.nio.file Files LinkOption NoSuchFileException)
@@ -7,8 +7,7 @@
     (org.apache.tika.sax BodyContentHandler)
     (org.apache.tika.metadata Metadata)
     (org.apache.tika.exception ZeroByteFileException)
-    (java.time LocalDateTime ZoneId ZoneOffset))
-  (:require [clojure.spec.alpha :as s]))
+    (java.time LocalDateTime ZoneOffset)))
 
 (defn list-dir [^String path]
   (let [dir (File. path)]
@@ -19,7 +18,6 @@
   (-> file-time
       .toInstant
       (LocalDateTime/ofInstant ZoneOffset/UTC)))
-
 
 (defn extract-base-metadata [^File file]
   (try (let [base-attr (as-> file i

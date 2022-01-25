@@ -1,6 +1,6 @@
-(ns initbb.doc-mngr.utils-test
+(ns initbb.doc-mngr.back.utils-test
   (:require [clojure.test :refer :all]
-            [initbb.doc-mngr.utils :as u])
+            [initbb.doc-mngr.back.utils :as u])
   (:import (java.io File)
            (java.time LocalDateTime Instant)
            (java.nio.file.attribute FileTime)))
