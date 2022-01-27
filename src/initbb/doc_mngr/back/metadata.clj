@@ -1,4 +1,5 @@
-(ns initbb.doc-mngr.back.utils
+(ns initbb.doc-mngr.back.metadata
+  (:require [schema.core :as s])
   (:import
     (java.io File FileInputStream FileNotFoundException)
     (java.nio.file Files LinkOption NoSuchFileException)
@@ -9,20 +10,14 @@
     (org.apache.tika.exception ZeroByteFileException)
     (java.time LocalDateTime ZoneOffset)))
 
-(defn list-dir [^String path]
-  (let [dir (File. path)]
-    (.listFiles dir)))
-
-(defn file-time-to-local-date-time
-  [^FileTime file-time]
-  (-> file-time
-      .toInstant
-      (LocalDateTime/ofInstant ZoneOffset/UTC)))
-
-(defn extract-base-metadata [^File file]
+(defn- extract-base-metadata
+  [file]
   (try (let [base-attr (as-> file i
                              (.toPath i)
-                             (Files/readAttributes i BasicFileAttributes (into-array [LinkOption/NOFOLLOW_LINKS])))]
+                             (Files/readAttributes i BasicFileAttributes (into-array [LinkOption/NOFOLLOW_LINKS])))
+             file-time-to-local-date-time (fn [file-time] (-> file-time
+                                                              .toInstant
+                                                              (LocalDateTime/ofInstant ZoneOffset/UTC)))]
          {:creation-time     (-> (.creationTime base-attr)
                                  file-time-to-local-date-time)
           :access-time       (-> (.lastAccessTime base-attr)
@@ -31,8 +26,7 @@
                                  file-time-to-local-date-time)})
        (catch NoSuchFileException _ nil)))
 
-(defn extract-content-type
-  [^File file]
+(defn- extract-content-type [^File file]
   (try
     (let [parser (AutoDetectParser.)
           handler (BodyContentHandler.)
@@ -44,7 +38,11 @@
     (catch FileNotFoundException _ nil)
     (catch ZeroByteFileException _ nil)))
 
-(defn extract-metadata [^File file]
+(s/defn extract-metadata :- {(s/required-key :content-type) s/Str
+                             (s/required-key :creation-time) s/Str
+                             (s/required-key :access-time) s/Str
+                             (s/required-key :modification-time) s/Str}
+  [file :- File]
   (let [base-metadata (extract-base-metadata file)
         content-type (extract-content-type file)]
     (merge base-metadata content-type)))

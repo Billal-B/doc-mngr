@@ -3,6 +3,7 @@
            org.apache.tika/tika-core        {:mvn/version "1.28"}
            org.apache.tika/tika-parsers     {:mvn/version "1.28"}
            com.walmartlabs/lacinia-pedestal {:mvn/version "1.1"}
+           prismatic/schema                 {:mvn/version "1.2.0"}
            io.aviso/logging                 {:mvn/version "0.2.0"}
            expound/expound                  {:mvn/version "0.9.0"}
            reagent/reagent                  {:mvn/version "0.10.0"}}
