@@ -2,6 +2,7 @@
   (:require [clojure.edn :as edn]
             [clojure.java.io :as io]
             [clojure.test :refer :all]
+            [initbb.doc-mngr.back.metadata :refer [extract-metadata]]
             [com.walmartlabs.lacinia :as lacinia]
             [com.walmartlabs.lacinia.util :as util]
             [com.walmartlabs.lacinia.schema :as schema]
@@ -14,11 +15,16 @@
                    (util/attach-resolvers (s/resolver-map))
                    schema/compile)]
     (testing "resolve get-metadata"
-      (with-redefs [s/resolve-get-metadata (fn [_ _ _] nil)] ; TODO: mock util/metadata fn instead
-        (is (= (lacinia/execute (s/load-schema)
-                                "{get_metadata(path:\"somepath\"){id}}"
-                                nil nil)
-               {:id "ok"}))))))
+      ; FIXME: apparently with-redef have a strange behavior when tests are run in parallel
+      (with-redefs [extract-metadata (fn [path]
+                                       {:creation_time (str "for-doc:" path)})]
+        (let [res (lacinia/execute schema
+                                   "{get_metadata(file_path:\"some-path\"){file_path metadata {creation_time} }}"
+                                   nil nil)]
+          (if (not (nil? (:errors res))) (throw (Exception. (apply str (:errors res)))))
+          (is (= (get-in res [:data :get_metadata :file_path]) "some-path"))
+          (is (= (get-in res [:data :get_metadata :metadata])
+                 {:creation_time "for-doc:some-path"})))))))
 
 
 (deftest load-schema-test

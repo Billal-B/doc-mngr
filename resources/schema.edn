@@ -1,13 +1,20 @@
 {:objects
- {:Document
+ {:Metadata
+  {:description "A document's metadata."
+   :fields
+   {:creation_time {:type String}}}
+
+  :Document
   {:description "A document."
    :fields
-   {:id {:type String}}}}
+   {:file_path {:type String}
+    :metadata {:type :Metadata
+               :resolve :Document/metadata}}}}
 
  :queries
  {:get_metadata
   {:type        :Document
    :description "Get the metadata of a document given its path."
    :args
-   {:path {:type String}}
+   {:file_path {:type String}}
    :resolve     :query/get-metadata}}}

@@ -3,11 +3,10 @@
   (:import
     (java.io File FileInputStream FileNotFoundException)
     (java.nio.file Files LinkOption NoSuchFileException)
-    (java.nio.file.attribute BasicFileAttributes FileTime)
+    (java.nio.file.attribute BasicFileAttributes)
     (org.apache.tika.parser AutoDetectParser ParseContext)
     (org.apache.tika.sax BodyContentHandler)
     (org.apache.tika.metadata Metadata)
-    (org.apache.tika.exception ZeroByteFileException)
     (java.time LocalDateTime ZoneOffset)))
 
 (defn- extract-base-metadata
@@ -35,8 +34,7 @@
           pc (ParseContext.)]
       (.parse parser fis handler metadata pc)
       {:content-type (.get metadata "Content-Type")})
-    (catch FileNotFoundException _ nil)
-    (catch ZeroByteFileException _ nil)))
+    (catch FileNotFoundException _ nil)))
 
 (s/defn extract-metadata :- {(s/required-key :content-type) s/Str
                              (s/required-key :creation-time) s/Str
