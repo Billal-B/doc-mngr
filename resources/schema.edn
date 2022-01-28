@@ -8,8 +8,7 @@
   {:description "A document."
    :fields
    {:file_path {:type String}
-    :metadata {:type :Metadata
-               :resolve :Document/metadata}}}}
+    :metadata {:type :Metadata}}}}
 
  :queries
  {:get_metadata

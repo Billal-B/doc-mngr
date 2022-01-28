@@ -5,23 +5,17 @@
     [com.walmartlabs.lacinia :as l]
     [com.walmartlabs.lacinia.util :as util]
     [com.walmartlabs.lacinia.schema :as s]
-    [clojure.edn :as edn])
-  (:import (java.io File)))
+    [clojure.edn :as edn]))
 
-
-
-(defn resolve-document-metadata
-  [_ _ document]
-  (extract-metadata (:file_path document)))
 
 (defn resolve-get-metadata
   [_ args _]
-  {:file_path (:file_path args)})
+  {:file_path (:file_path args)
+   :metadata (extract-metadata (:file_path args))})
 
 (defn resolver-map
   []
-  {:query/get-metadata resolve-get-metadata
-   :Document/metadata resolve-document-metadata})
+  {:query/get-metadata resolve-get-metadata})
 
 (defn load-schema []
   (-> (io/resource "schema.edn")
