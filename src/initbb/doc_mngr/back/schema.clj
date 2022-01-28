@@ -5,13 +5,16 @@
     [com.walmartlabs.lacinia :as l]
     [com.walmartlabs.lacinia.util :as util]
     [com.walmartlabs.lacinia.schema :as s]
-    [clojure.edn :as edn]))
+    [clojure.edn :as edn])
+  (:import (java.io File)))
 
 
 (defn resolve-extract-metadata
   [_ args _]
-  {:file_path (:file_path args)
-   :metadata (extract-metadata (:file_path args))})
+  (map
+    (fn [path] {:file_path path
+                   :metadata  (extract-metadata (File. path))})
+    (:file_paths args)))
 
 (defn resolver-map
   []

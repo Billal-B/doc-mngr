@@ -16,4 +16,4 @@
            :min   {:main-opts ["-m" "figwheel.main" "-O" "advanced" "-bo" "dev"]}
            :test  {:extra-paths ["test" "dev-resources"]
                    :extra-deps  {org.clojure/tools.namespace {:mvn/version "1.2.0"}}
-                   :main-opts   ["-m" "figwheel.main" "-co" "test.cljs.edn" "-m" "initbb.doc_mngr.test-runner"]}}}
+                   :main-opts   ["-m" "figwheel.main" "-co" "test.cljs.edn" "-m" "initbb.doc-mngr.front.core"]}}}

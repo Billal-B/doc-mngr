@@ -18,13 +18,13 @@
       ; FIXME: apparently with-redef have a strange behavior when tests are run in parallel
       (with-redefs [extract-metadata (fn [path]
                                        {:creation_time (str "for-doc:" path)})]
-        (let [res (lacinia/execute schema
-                                   "{extract_metadata(file_path:\"some-path\"){file_path metadata {creation_time} }}"
-                                   nil nil)]
-          (if (not (nil? (:errors res))) (throw (Exception. (apply str (:errors res)))))
-          (is (= (get-in res [:data :extract_metadata :file_path]) "some-path"))
-          (is (= (get-in res [:data :extract_metadata :metadata])
-                 {:creation_time "for-doc:some-path"})))))))
+        (let [query "{extract_metadata(file_paths:[\"some-path\"]){file_path metadata {creation_time} }}"
+              res (lacinia/execute schema query nil nil)
+              err (:errors res)
+              out (first (get-in res [:data :extract_metadata]))]
+          (if (not (nil? err)) (throw (Exception. (apply str (:errors res)))))
+          (is (= (:file_path out) "some-path"))
+          (is (= (:metadata out) {:creation_time "for-doc:some-path"})))))))
 
 
 (deftest load-schema-test

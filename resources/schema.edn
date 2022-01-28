@@ -15,8 +15,8 @@
 
  :queries
  {:extract_metadata
-  {:type        :Document
+  {:type        (list :Document)
    :description "Get the metadata of a document given its path."
    :args
-   {:file_path {:type String}}
+   {:file_paths {:type (list String)}}
    :resolve     :query/extract-metadata}}}
