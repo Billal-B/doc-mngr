@@ -8,14 +8,14 @@
     [clojure.edn :as edn]))
 
 
-(defn resolve-get-metadata
+(defn resolve-extract-metadata
   [_ args _]
   {:file_path (:file_path args)
    :metadata (extract-metadata (:file_path args))})
 
 (defn resolver-map
   []
-  {:query/get-metadata resolve-get-metadata})
+  {:query/extract-metadata resolve-extract-metadata})
 
 (defn load-schema []
   (-> (io/resource "schema.edn")

@@ -14,16 +14,16 @@
                    edn/read-string
                    (util/attach-resolvers (s/resolver-map))
                    schema/compile)]
-    (testing "resolve get-metadata"
+    (testing "resolve extract_metadata"
       ; FIXME: apparently with-redef have a strange behavior when tests are run in parallel
       (with-redefs [extract-metadata (fn [path]
                                        {:creation_time (str "for-doc:" path)})]
         (let [res (lacinia/execute schema
-                                   "{get_metadata(file_path:\"some-path\"){file_path metadata {creation_time} }}"
+                                   "{extract_metadata(file_path:\"some-path\"){file_path metadata {creation_time} }}"
                                    nil nil)]
           (if (not (nil? (:errors res))) (throw (Exception. (apply str (:errors res)))))
-          (is (= (get-in res [:data :get_metadata :file_path]) "some-path"))
-          (is (= (get-in res [:data :get_metadata :metadata])
+          (is (= (get-in res [:data :extract_metadata :file_path]) "some-path"))
+          (is (= (get-in res [:data :extract_metadata :metadata])
                  {:creation_time "for-doc:some-path"})))))))
 
 

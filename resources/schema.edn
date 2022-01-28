@@ -2,18 +2,21 @@
  {:Metadata
   {:description "A document's metadata."
    :fields
-   {:creation_time {:type String}}}
+   {:content_type      {:type String}
+    :creation_time     {:type String}
+    :access_time       {:type String}
+    :modification_time {:type String}}}
 
   :Document
   {:description "A document."
    :fields
    {:file_path {:type String}
-    :metadata {:type :Metadata}}}}
+    :metadata  {:type :Metadata}}}}
 
  :queries
- {:get_metadata
+ {:extract_metadata
   {:type        :Document
    :description "Get the metadata of a document given its path."
    :args
    {:file_path {:type String}}
-   :resolve     :query/get-metadata}}}
+   :resolve     :query/extract-metadata}}}
