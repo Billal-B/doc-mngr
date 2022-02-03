@@ -7,10 +7,10 @@
 
 (deftest extract-metadata-test
   (testing "should handle invalid file path"
-    (let [metadata (m/extract-metadata (File. "dev-resources/initbb/doc_mngr/back/dont_exist"))]
+    (let [metadata (m/extract-metadata (File. "resources-back/initbb/doc_mngr/back/dont_exist"))]
       (is (= metadata
              nil))))
-  (let [metadata (m/extract-metadata (File. "dev-resources/initbb/doc_mngr/back/test"))]
+  (let [metadata (m/extract-metadata (File. "resources-back/initbb/doc_mngr/back/test"))]
     (testing "schema"
       (is (s/validate
             {(s/required-key :creation_time)     LocalDateTime

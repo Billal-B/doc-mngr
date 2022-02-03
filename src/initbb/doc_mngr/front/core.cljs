@@ -11,13 +11,21 @@
   (gdom/getElement "app"))
 
 (defn scan-folder []
+  (print "scan-folder")
+  (let [ele (gdom/getElement "scan-folder")
+        files (aget ele "files")]
+    (doseq [file files]
+      (print (aget file "webkitRelativePath")))))
+
+(defn upload-folder []
   [:div {:class "scan-folder"}
    [:h2 "Scan folder :"]
-   [:input {:type "file" :directory "" :webkitdirectory "" }]])
+   [:input {:type "file" :directory "" :webkitdirectory "" :id "scan-folder"}]
+   [:button {:type "button" :on-click scan-folder} "Launch scan."]])
 
 (defn app []
   [:div {:class "app"}
-   [scan-folder]])
+   [upload-folder]])
 
 (defn mount [el]
   (rdom/render [app] el))

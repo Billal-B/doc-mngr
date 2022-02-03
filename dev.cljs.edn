@@ -2,4 +2,4 @@
   :css-dirs ["resources/public/css"]
   :auto-testing true
    }
-{:main initbb.doc-mngr.core}
+{:main initbb.doc-mngr.front.core}
