@@ -1,0 +1,31 @@
+{
+  "name": "doc-mngr",
+  "version": "1.0.0",
+  "description": "Desktop application that aims to find documents quickly based on the content and metadata of said documents.",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "shadow-cljs": "^2.16.12"
+  },
+  "devDependencies": {
+    "bulma": "^0.9.3",
+    "electron": "^17.0.0",
+    "graphql": "^16.3.0"
+  },
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Billal-B/doc-mngr.git"
+  },
+  "author": "Billal B",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Billal-B/doc-mngr/issues"
+  },
+  "homepage": "https://github.com/Billal-B/doc-mngr#readme"
+}
