@@ -1,8 +1,0 @@
-;; shadow-cljs configuration
-{:deps true
-
- :builds
- {:app {:target     :browser
-        :output-dir "public/js"
-        :asset-path "/js"
-        :modules    {:renderer {:init-fn initbb.doc-mngr.front.renderer.core/start!}}}}}

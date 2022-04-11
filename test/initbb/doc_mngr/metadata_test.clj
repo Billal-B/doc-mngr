@@ -1,7 +1,6 @@
-(ns initbb.doc-mngr.back.utils-test
+(ns initbb.doc-mngr.metadata-test
   (:require [clojure.test :refer :all]
-            [schema.core :as s]
-            [initbb.doc-mngr.back.metadata :as m])
+            [initbb.doc-mngr.metadata :as m])
   (:import (java.io File)
            (java.time LocalDateTime)))
 
@@ -11,13 +10,6 @@
       (is (= metadata
              nil))))
   (let [metadata (m/extract-metadata (File. "test/resources/test_file"))]
-    (testing "schema"
-      (is (s/validate
-            {(s/required-key :creation_time)     LocalDateTime
-             (s/required-key :access_time)       LocalDateTime
-             (s/required-key :modification_time) LocalDateTime
-             (s/required-key :content_type)      s/Str}
-            metadata)))
     (testing "should extract content type"
       (is (= (:content_type metadata)
              "text/plain; charset=ISO-8859-1")))
