@@ -3,10 +3,11 @@
     (java.io File FileInputStream FileNotFoundException)
     (java.nio.file Files LinkOption NoSuchFileException Path)
     (java.nio.file.attribute BasicFileAttributes)
-    (org.apache.tika.parser AutoDetectParser ParseContext)
-    (org.apache.tika.sax BodyContentHandler)
+    (java.time LocalDateTime ZoneOffset)
+    (org.apache.tika.exception ZeroByteFileException WriteLimitReachedException)
     (org.apache.tika.metadata Metadata)
-    (java.time LocalDateTime ZoneOffset)))
+    (org.apache.tika.parser AutoDetectParser ParseContext)
+    (org.apache.tika.sax BodyContentHandler)))
 
 (defrecord FileMetadata [^Path path
                          ^LocalDateTime creation_time
@@ -29,16 +30,20 @@
                             file-time-to-local-date-time)}))
 
 (defn- extract-content-type [^File file]
-  (let [parser (AutoDetectParser.)
-        handler (BodyContentHandler.)
-        metadata (Metadata.)
-        fis (FileInputStream. file)
-        pc (ParseContext.)]
-    (.parse parser fis handler metadata pc)
-    {:content_type (.get metadata "Content-Type")}))
+  (try
+    (let [parser (AutoDetectParser.)
+          handler (BodyContentHandler. -1)
+          metadata (Metadata.)
+          fis (FileInputStream. file)
+          pc (ParseContext.)]
+      (.parse parser fis handler metadata pc)
+      {:content_type (.get metadata "Content-Type")})
+    (catch ZeroByteFileException _ nil)
+    (catch WriteLimitReachedException _ nil)))
 
 
 (defn extract-metadata [^File file]
+  ;; TODO: implements filter on file size
   (let [files (filter #(.isFile %) (file-seq file))
         file-fn (fn ^FileMetadata [^File file]
                   (try

@@ -32,4 +32,5 @@
              ["test/resources/metadata/folder/4"
               "test/resources/metadata/folder/3"
               "test/resources/metadata/2"
+              "test/resources/metadata/empty"
               "test/resources/metadata/test_file"])))))
