@@ -1,14 +1,15 @@
 (ns initbb.doc-mngr.metadata
   (:import
     (java.io File FileInputStream FileNotFoundException)
-    (java.nio.file Files LinkOption NoSuchFileException)
+    (java.nio.file Files LinkOption NoSuchFileException Path)
     (java.nio.file.attribute BasicFileAttributes)
     (org.apache.tika.parser AutoDetectParser ParseContext)
     (org.apache.tika.sax BodyContentHandler)
     (org.apache.tika.metadata Metadata)
     (java.time LocalDateTime ZoneOffset)))
 
-(defrecord FileMetadata [^LocalDateTime creation_time
+(defrecord FileMetadata [^Path path
+                         ^LocalDateTime creation_time
                          ^LocalDateTime access_time
                          ^LocalDateTime modification_time
                          ^String content_type])
@@ -37,10 +38,13 @@
     {:content_type (.get metadata "Content-Type")}))
 
 
-(defn extract-metadata ^FileMetadata [^File file]
-  (try
-    (let [base-metadata (extract-base-metadata file)
-          content-type (extract-content-type file)]
-      (map->FileMetadata (merge base-metadata content-type)))
-    (catch NoSuchFileException _ nil)
-    (catch FileNotFoundException _ nil)))
+(defn extract-metadata [^File file]
+  (let [files (filter #(.isFile %) (file-seq file))
+        file-fn (fn ^FileMetadata [^File file]
+                  (try
+                    (let [base-metadata (extract-base-metadata file)
+                          content-type (extract-content-type file)]
+                      (map->FileMetadata (merge base-metadata content-type {:path (.toPath file)})))
+                    (catch NoSuchFileException _ nil)
+                    (catch FileNotFoundException _ nil)))]
+    (map file-fn files)))
